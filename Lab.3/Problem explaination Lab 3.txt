@@ -1,0 +1,28 @@
+Project Title: Exploratory Data Analysis (EDA) on Chocolate Sales Dataset
+Course: ARTI308 - Machine Learning
+---------------------------------------------------------
+
+1. Problem Statement:
+The goal of this project is to apply Exploratory Data Analysis (EDA) techniques to a dataset containing chocolate sales records. In Machine Learning, understanding the data is a critical first step (representing 70-80% of the project time). This analysis aims to:
+- Clean and format raw data (handling dates and currency symbols).
+- Identify missing values and duplicates to ensure data quality.
+- Visualize sales distribution and revenue patterns across different products.
+- Analyze the correlation between shipping volume and total revenue.
+- Track monthly trends to provide actionable business insights.
+
+2. Tools & Libraries Used:
+- Python
+- Pandas (Data manipulation)
+- NumPy (Numerical operations)
+- Matplotlib & Seaborn (Data visualization)
+
+3. Key Findings:
+- Successfully cleaned the 'Amount' column by removing currency symbols and converting to numeric types.
+- Identified "Smooth Sliky Salty" as the top-performing product in terms of revenue.
+- Confirmed a positive correlation between boxes shipped and revenue through a correlation matrix.
+- Visualized monthly revenue trends which show the growth patterns over the recorded period.
+
+4. Files in this Repository:
+- CCSIT_ARTI308_Lab3.ipynb: The Jupyter Notebook containing the full Python code and visualizations.
+- Chocolate_Sales.csv: The raw dataset used for the analysis.
+- README.txt: This project description file.
