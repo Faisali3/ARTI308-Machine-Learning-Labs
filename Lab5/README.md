@@ -1,90 +1,80 @@
-# ARTI 308 – Lab 5: Feature Engineering (Classification)
+ARTI 308 – Lab 5: Feature Engineering (Classification)
+Project Overview
 
-## ما هو هذا المشروع؟
+This project analyzes a food delivery dataset similar to the Talabat platform.
+The objective is to build a machine learning model that predicts the order status: whether the order will be Delivered, Cancelled, or still In Transit.
 
-تحليل بيانات طلبات توصيل طعام مشابهة لتطبيق **طلبات**، الهدف هو بناء نموذج يتنبأ بحالة الطلب: هل سيتم توصيله؟ إلغاؤه؟ أم لا يزال في الطريق؟
+Project Files
+File	Description
+ARTI308_Lab5_Complete.ipynb	The complete Jupyter Notebook containing the analysis and model
+talabat_enhanced_orders.csv	The dataset used in the project
 
----
+⚠️ Make sure both files are placed in the same folder before running the notebook.
 
-## الملفات
+Dataset Information
+100,000 delivery orders
+23 columns including order details, restaurant information, driver data, and customer information
+The dataset is fully clean: no missing values and no duplicate rows.
+Target Variable: Order_Status
+Status	Count	Percentage
+Delivered	85,197	85.2%
+Cancelled	9,812	9.8%
+In Transit	4,991	5.0%
+Step-by-Step Process
+1. Data Loading and Validation
 
-| الملف | الوصف |
-|-------|-------|
-| `ARTI308_Lab5_Complete.ipynb` | الـ notebook الكامل |
-| `talabat_enhanced_orders.csv` | الداتا سيت |
+The dataset was loaded and checked to ensure there were no missing values, duplicates, or inconsistencies.
 
-> ⚠️ ضع الملفين في **نفس المجلد** قبل التشغيل
+2. Feature Engineering
 
----
+Instead of relying only on the original columns, several new features were created to improve the model’s ability to learn meaningful patterns.
 
-## الداتا سيت
+New Feature	How it was Derived	Purpose
+order_hour	Extracted hour from Order_Time	Capture time-of-day ordering patterns
+order_dayofweek	Extracted weekday	Identify weekly behavioral patterns
+is_weekend	Indicates Saturday or Sunday	Detect weekend behavior
+is_peak_hour	Lunch (12–15) or dinner (19–23)	Identify high-demand periods
+price_per_item	Total price ÷ quantity	Estimate restaurant price category
+haversine_rest_to_cust_km	Calculated geographic distance between restaurant and customer	Delivery distance
+driver_to_restaurant_km ⭐	Distance between driver and restaurant	Driver proximity to restaurant
+price_tier	Categorized price into low/medium/high/very_high	Simplify price ranges
 
-- **100,000 طلب** توصيل
-- **23 عمود**: معلومات الطلب، المطعم، السائق، الزبون
-- **نظيف تماماً**: لا قيم مفقودة، لا صفوف مكررة
+⭐ The driver_to_restaurant_km feature was introduced as a custom feature and ranked first in feature importance.
 
-### المتغير الهدف: `Order_Status`
+3. Avoiding Data Leakage
 
-| الحالة | العدد | النسبة |
-|--------|-------|--------|
-| Delivered | 85,197 | 85.2% |
-| Cancelled | 9,812 | 9.8% |
-| In Transit | 4,991 | 5.0% |
+Columns that would not be available at the time the order is placed were removed, such as:
 
----
+Delivery_Time
+Delivery_Duration_Minutes
 
-## ماذا سويت خطوة بخطوة؟
+Removing these features prevents the model from learning unrealistic information that would not exist in real-world predictions.
 
-### 1. تحميل البيانات والتحقق منها
-تأكدت إن الداتا نظيفة وما فيها أي مشاكل.
+4. Model Training
 
-### 2. Feature Engineering — هندسة الميزات
-بدل ما أستخدم الأعمدة الأصلية بس، أنشأت ميزات جديدة تساعد النموذج:
+The model used in this project is Random Forest Classifier, combined with:
 
-| الميزة الجديدة | كيف اشتُقت | الهدف منها |
-|----------------|------------|------------|
-| `order_hour` | ساعة الطلب من `Order_Time` | معرفة وقت الطلب |
-| `order_dayofweek` | يوم الأسبوع | معرفة أنماط الأيام |
-| `is_weekend` | هل السبت أو الأحد؟ | فرق سلوك العطل |
-| `is_peak_hour` | غداء 12–15 أو عشاء 19–23 | أوقات الضغط العالي |
-| `price_per_item` | السعر الكلي ÷ الكمية | فئة الطعام/المطعم |
-| `haversine_rest_to_cust_km` | حساب المسافة الحقيقية بين المطعم والزبون | مسافة التوصيل |
-| `driver_to_restaurant_km` ⭐ | المسافة بين السائق والمطعم | قُرب السائق من المطعم |
-| `price_tier` | تقسيم السعر لـ low/medium/high/very_high | تبسيط الفئات السعرية |
+One-Hot Encoding for categorical features
+Standard preprocessing steps for machine learning pipelines
 
-> ⭐ هذه الميزة من ابتكاري وحصلت على **المرتبة الأولى** في الأهمية
+Random Forest was chosen because it performs well with tabular datasets and can naturally capture non-linear relationships.
 
-### 3. تجنب Data Leakage
-استبعدت الأعمدة اللي ما تكون متاحة وقت وضع الطلب مثل `Delivery_Time` و`Delivery_Duration_Minutes`.
-
-### 4. تدريب النموذج
-استخدمت **Random Forest** مع One-Hot Encoding للأعمدة النصية.
-
----
-
-## النتائج
-
-```
+Model Results
 Accuracy: 85.19%
-```
 
-لكن الـ accuracy وحدها مضللة بسبب عدم توازن البيانات — النموذج يتنبأ بـ Delivered فقط.
+However, accuracy alone can be misleading due to class imbalance.
+Since most orders are labeled as Delivered, the model tends to predict this class frequently.
 
----
+Student Tasks
+Task	What Was Done	Result
+Task 1	Added driver_to_restaurant_km feature	Ranked #1 in feature importance
+Task 2	Modified peak hour rule (added breakfast 7–10)	No significant accuracy change
+Task 3	Tested top_k = 10, 20, 30, 50 for Item_Name reduction	Accuracy remained similar
+Task 4	Applied SelectFromModel for feature selection	Achieved same accuracy with a simpler model
+Conclusion
+Geographical features (GPS coordinates) had the strongest impact on prediction performance.
+Feature engineering significantly improved the model's understanding of the data.
+The main challenge in this dataset is class imbalance.
+Future Improvement
 
-## المهام (Student Tasks)
-
-| المهمة | ما سويته | النتيجة |
-|--------|----------|---------|
-| Task 1 | أضفت ميزة `driver_to_restaurant_km` | احتلت المرتبة الأولى في Feature Importance |
-| Task 2 | غيّرت قاعدة peak hour (أضفت الإفطار 7–10) | ما تغيّرت الدقة |
-| Task 3 | جربت top_k = 10, 20, 30, 50 لتقليص Item_Name | نفس الدقة في كل الحالات |
-| Task 4 | استخدمت SelectFromModel لاختيار الميزات | نفس الدقة مع نموذج أبسط |
-
----
-
-## الخلاصة
-
-- الميزات الجغرافية (إحداثيات GPS) هي الأكثر تأثيراً
-- هندسة الميزات أضافت قيمة حقيقية للنموذج
-- المشكلة الأساسية هي **عدم توازن البيانات** — التوصية: استخدام **SMOTE** في الخطوة القادمة
+A recommended next step is applying techniques such as SMOTE (Synthetic Minority Oversampling Technique) to balance the dataset and improve predictions for minority classes.
