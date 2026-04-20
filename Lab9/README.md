@@ -4,19 +4,7 @@
 
 ---
 
-## 📁 Repository Structure
-
-```
-├── 01-Decision_Trees_and_Random_Forests.ipynb   # Core concepts walkthrough (Kyphosis)
-├── 02-Decision_Trees_and_Random_Forest_Project.ipynb  # Full project (LendingClub Loans)
-├── kyphosis.csv                                 # Spinal surgery outcome dataset
-├── loan_data.csv                                # LendingClub loan repayment dataset (2007–2010)
-└── README.md
-```
-
----
-
-## 📓 Notebook 1 — Decision Trees & Random Forests (Concepts)
+## Decision Trees & Random Forests (Concepts)
 
 **Dataset:** `kyphosis.csv`  
 **Goal:** Predict whether kyphosis (a spinal deformity) is present or absent after corrective surgery.
