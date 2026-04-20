@@ -39,7 +39,7 @@
 
 ---
 
-## 📓 Notebook 2 — Random Forest Project (LendingClub)
+## Random Forest Project (LendingClub)
 
 **Dataset:** `loan_data.csv`  
 **Goal:** Predict whether a borrower will **fully repay** their loan using LendingClub data from 2007–2010.
